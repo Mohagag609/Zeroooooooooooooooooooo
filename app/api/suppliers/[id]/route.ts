@@ -49,7 +49,9 @@ export async function GET(
       },
     })
 
-    const supplierBalance = (balance._sum.credit || 0) - (balance._sum.debit || 0)
+    const creditSum = balance._sum.credit ? Number(balance._sum.credit) : 0
+    const debitSum = balance._sum.debit ? Number(balance._sum.debit) : 0
+    const supplierBalance = creditSum - debitSum
 
     return NextResponse.json({
       ...supplier,
