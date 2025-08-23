@@ -18,8 +18,7 @@ export async function GET(request: NextRequest) {
     const where = {
       ...(search && {
         OR: [
-          { description: { contains: search, mode: 'insensitive' as const } },
-          { reference: { contains: search, mode: 'insensitive' as const } },
+          { note: { contains: search, mode: 'insensitive' as const } },
         ],
       }),
       ...(projectId && { projectId }),
