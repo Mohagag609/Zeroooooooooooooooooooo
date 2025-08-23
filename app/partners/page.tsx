@@ -18,7 +18,6 @@ import {
   Mail,
   MapPin,
   Building2,
-  Handshake,
   CheckCircle,
   AlertTriangle,
   UserCheck,
@@ -550,7 +549,7 @@ export default function PartnersPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Handshake className="h-5 w-5" />
+            <Users className="h-5 w-5" />
             ملخص الشراكة
           </CardTitle>
         </CardHeader>

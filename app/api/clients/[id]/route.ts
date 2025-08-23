@@ -25,11 +25,7 @@ export async function GET(
             },
           },
         },
-        invoices: {
-          include: {
-            lines: true,
-          },
-        },
+        invoices: true,
         journalLines: {
           include: {
             journalEntry: true,

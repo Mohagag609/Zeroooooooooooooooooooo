@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Eye, Edit, Trash2, Plus, Wallet, Bank, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
+import { Eye, Edit, Trash2, Plus, Wallet, Building2, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Define the Cashbox type based on our Prisma schema
@@ -42,7 +42,7 @@ const columns: ColumnDef<Cashbox>[] = [
       return (
         <div className="flex items-center gap-2">
           {cashbox.type === 'BANK' ? (
-            <Bank className="h-4 w-4 text-blue-600" />
+            <Building2 className="h-4 w-4 text-blue-600" />
           ) : (
             <Wallet className="h-4 w-4 text-green-600" />
           )}
