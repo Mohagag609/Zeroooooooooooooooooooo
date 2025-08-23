@@ -144,7 +144,7 @@ const upcomingTasks = [
 ]
 
 export default function DashboardPage() {
-  // Mock statistics
+  // Mock statistics - using static data to avoid API issues
   const stats = {
     totalRevenue: 3300000,
     totalExpenses: 2350000,
@@ -308,10 +308,10 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Project Progress */}
+        {/* Project Progress Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>تقدم المشاريع</CardTitle>
+            <CardTitle>حالة المشاريع</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -354,26 +354,26 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">المواد منخفضة المخزون</CardTitle>
+            <CardTitle className="text-sm font-medium">الموردين النشطين</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{stats.lowStockMaterials}</div>
+            <div className="text-2xl font-bold">{stats.activeSuppliers}</div>
             <p className="text-xs text-muted-foreground">
-              من أصل {stats.totalMaterials} مادة
+              من أصل {stats.totalSuppliers} مورد
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">الفواتير المتأخرة</CardTitle>
+            <CardTitle className="text-sm font-medium">المواد منخفضة المخزون</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{stats.overdueInvoices}</div>
+            <div className="text-2xl font-bold text-yellow-600">{stats.lowStockMaterials}</div>
             <p className="text-xs text-muted-foreground">
-              من أصل {stats.pendingInvoices} فاتورة معلقة
+              من أصل {stats.totalMaterials} مادة
             </p>
           </CardContent>
         </Card>
@@ -386,13 +386,13 @@ export default function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats.totalBalance)}</div>
             <p className="text-xs text-muted-foreground">
-              في {stats.totalCashboxes} حساب
+              في {stats.totalCashboxes} صندوق
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Bottom Row */}
+      {/* Recent Activities and Tasks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activities */}
         <Card>
@@ -402,27 +402,27 @@ export default function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {recentActivities.map((activity) => (
-                <motion.div
-                  key={activity.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center gap-3 p-3 rounded-lg border"
-                >
-                  {getStatusIcon(activity.status)}
-                  <div className="flex-1">
-                    <div className="font-medium">{activity.title}</div>
-                    <div className="text-sm text-muted-foreground">{activity.description}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {formatDate(activity.date)}
-                    </div>
+                <div key={activity.id} className="flex items-start gap-3">
+                  <div className="mt-1">
+                    {getStatusIcon(activity.status)}
                   </div>
-                  {activity.amount > 0 && (
-                    <div className="text-sm font-medium">
-                      {formatCurrency(activity.amount)}
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">{activity.title}</h4>
+                      {activity.amount > 0 && (
+                        <span className="text-sm font-medium">
+                          {formatCurrency(activity.amount)}
+                        </span>
+                      )}
                     </div>
-                  )}
-                </motion.div>
+                    <p className="text-sm text-muted-foreground">
+                      {activity.description}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatDate(activity.date)}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </CardContent>
@@ -436,24 +436,18 @@ export default function DashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {upcomingTasks.map((task) => (
-                <motion.div
-                  key={task.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex items-center justify-between p-3 rounded-lg border"
-                >
+                <div key={task.id} className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="font-medium">{task.title}</div>
-                    <div className="text-sm text-muted-foreground">
+                    <h4 className="font-medium">{task.title}</h4>
+                    <p className="text-sm text-muted-foreground">
                       {formatDate(task.dueDate)}
-                    </div>
+                    </p>
                   </div>
                   <Badge className={getPriorityColor(task.priority)}>
                     {task.priority === 'high' ? 'عالية' : 
                      task.priority === 'medium' ? 'متوسطة' : 'منخفضة'}
                   </Badge>
-                </motion.div>
+                </div>
               ))}
             </div>
           </CardContent>
