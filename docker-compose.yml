@@ -38,10 +38,13 @@ services:
     container_name: erp_app
     restart: unless-stopped
     environment:
-      - DATABASE_URL=postgresql://erp_user:erp_password@postgres:5432/erp_db
-      - NEXTAUTH_SECRET=your-secret-key-here
-      - NEXTAUTH_URL=http://localhost:3000
+      - DATABASE_URL="postgresql://neondb_owner:npg_Nf8Ss6AGKOuc@ep-wild-feather-adtcl8dw-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+      - NEXTAUTH_SECRET="X/EomexuuFqxGadnGw4xpUTyrP5exZopCcbQBqCTheY="
+      - NEXTAUTH_URL="https://comfy-fairy-cf6b77.netlify.app/"
       - NODE_ENV=production
+      DATABASE_URL="postgresql://neondb_owner:npg_Nf8Ss6AGKOuc@ep-wild-feather-adtcl8dw-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+
+
     ports:
       - "3000:3000"
     depends_on:
