@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { revenueSchema } from '@/lib/validations'
 import { generateId } from '@/lib/utils'
-import { createRevenueEntry } from '@/lib/check-balance'
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,7 +50,13 @@ export async function GET(request: NextRequest) {
               name: true,
             },
           },
-
+          account: {
+            select: {
+              id: true,
+              name: true,
+              code: true,
+            },
+          },
         },
       }),
       prisma.revenue.count({ where }),
@@ -80,83 +85,49 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validatedData = revenueSchema.parse(body)
 
-    // Start database transaction
-    const result = await prisma.$transaction(async (tx) => {
-      // Create revenue record
-      const revenue = await tx.revenue.create({
-        data: {
-          id: generateId(),
-          ...validatedData,
-        },
-      })
-
-      // Create journal entry with double-entry logic
-      const journalLines = createRevenueEntry(
-        validatedData.amount,
-        validatedData.clientId,
-        validatedData.projectId
-      )
-
-      const journalEntry = await tx.journalEntry.create({
-        data: {
-          id: generateId(),
-          date: validatedData.date,
-          description: `إيراد: ${validatedData.description}`,
-          reference: revenue.id,
-          lines: {
-            create: journalLines.map((line) => ({
-              id: generateId(),
-              ...line,
-            })),
+    const revenue = await prisma.revenue.create({
+      data: {
+        id: generateId(),
+        ...validatedData,
+      },
+      include: {
+        project: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
           },
         },
-        include: {
-          lines: {
-            include: {
-              account: true,
-            },
+        client: {
+          select: {
+            id: true,
+            name: true,
           },
         },
-      })
-
-      // Get updated revenue with includes
-      const updatedRevenue = await tx.revenue.findUnique({
-        where: { id: revenue.id },
-        include: {
-          project: {
-            select: {
-              id: true,
-              name: true,
-              code: true,
-            },
-          },
-          client: {
-            select: {
-              id: true,
-              name: true,
-            },
+        account: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
           },
         },
-      })
-
-      // Create audit log
-      await tx.auditLog.create({
-        data: {
-          id: generateId(),
-          action: 'CREATE',
-          entity: 'Revenue',
-          entityId: revenue.id,
-          meta: {
-            revenue: validatedData,
-            journalEntry: journalEntry,
-          },
-        },
-      })
-
-      return updatedRevenue
+      },
     })
 
-    return NextResponse.json(result, { status: 201 })
+    // Create audit log
+    await prisma.auditLog.create({
+      data: {
+        id: generateId(),
+        action: 'CREATE',
+        entity: 'Revenue',
+        entityId: revenue.id,
+        meta: {
+          createdRevenue: validatedData,
+        },
+      },
+    })
+
+    return NextResponse.json(revenue, { status: 201 })
   } catch (error) {
     console.error('Error creating revenue:', error)
     return NextResponse.json(
