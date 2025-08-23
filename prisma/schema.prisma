@@ -9,9 +9,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/* =========================
-   Enums
-========================= */
+// =========================
+// Enums
+// =========================
 enum AccountType {
   asset
   liability
@@ -64,9 +64,9 @@ enum BackupStatus {
   failed
 }
 
-/* =========================
-   Core Entities
-========================= */
+// =========================
+// Core Entities
+// =========================
 model Client {
   id          String       @id @default(cuid())
   name        String
@@ -78,7 +78,6 @@ model Client {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  // Back-relations
   projects      Project[]
   revenues      Revenue[]
   invoices      Invoice[]
@@ -99,7 +98,6 @@ model Supplier {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  // Back-relations
   expenses      Expense[]
   invoices      Invoice[]
   journalLines  JournalLine[]
@@ -107,9 +105,9 @@ model Supplier {
   @@map("suppliers")
 }
 
-/* =========================
-   Projects & Phases
-========================= */
+// =========================
+// Projects & Phases
+// =========================
 model Project {
   id            String         @id @default(cuid())
   code          String         @unique
@@ -122,7 +120,6 @@ model Project {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
-  // Relations
   client         Client?        @relation(fields: [clientId], references: [id])
   phases         ProjectPhase[]
   revenues       Revenue[]
@@ -132,7 +129,7 @@ model Project {
   partners       ProjectPartner[]
   payrolls       Payroll[]
   journalEntries JournalEntry[]
-  journalLines   JournalLine[]     // back of JournalLine.project
+  journalLines   JournalLine[]
   settlements    Settlement[]
 
   @@map("projects")
@@ -144,11 +141,10 @@ model ProjectPhase {
   name         String
   startDate    DateTime?
   endDate      DateTime?
-  progress     Decimal?  @db.Decimal(5, 2) // 0-100%
+  progress     Decimal?  @db.Decimal(5, 2)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  // Relations
   project       Project       @relation(fields: [projectId], references: [id])
   revenues      Revenue[]
   expenses      Expense[]
@@ -159,9 +155,9 @@ model ProjectPhase {
   @@map("project_phases")
 }
 
-/* =========================
-   Materials & Warehouses
-========================= */
+// =========================
+// Materials & Warehouses
+// =========================
 model Material {
   id              String         @id @default(cuid())
   name            String
@@ -170,7 +166,6 @@ model Material {
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
 
-  // Back-relations
   materialMoves MaterialMove[]
 
   @@map("materials")
@@ -183,7 +178,6 @@ model Warehouse {
   createdAt  DateTime        @default(now())
   updatedAt  DateTime        @updatedAt
 
-  // Back-relations
   materialMovesFrom MaterialMove[] @relation("FromWarehouse")
   materialMovesTo   MaterialMove[] @relation("ToWarehouse")
 
@@ -205,7 +199,6 @@ model MaterialMove {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  // Relations
   project        Project       @relation(fields: [projectId], references: [id])
   material       Material      @relation(fields: [materialId], references: [id])
   phase          ProjectPhase? @relation(fields: [phaseId], references: [id])
@@ -216,9 +209,9 @@ model MaterialMove {
   @@map("material_moves")
 }
 
-/* =========================
-   Chart of Accounts & Journal
-========================= */
+// =========================
+// Chart of Accounts & Journal
+// =========================
 model Account {
   id         String       @id @default(cuid())
   code       String       @unique
@@ -228,7 +221,6 @@ model Account {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
 
-  // Relations
   parent     Account?     @relation("AccountHierarchy", fields: [parentId], references: [id])
   children   Account[]    @relation("AccountHierarchy")
 
@@ -251,7 +243,6 @@ model JournalEntry {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  // Relations
   project     Project?      @relation(fields: [projectId], references: [id])
   reversed    JournalEntry? @relation("JournalReversal", fields: [reversedId], references: [id])
   reversals   JournalEntry[] @relation("JournalReversal")
@@ -273,7 +264,6 @@ model JournalLine {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  // Relations
   entry     JournalEntry @relation(fields: [entryId], references: [id])
   account   Account      @relation(fields: [accountId], references: [id])
   project   Project?     @relation(fields: [projectId], references: [id])
@@ -288,9 +278,9 @@ model JournalLine {
   @@map("journal_lines")
 }
 
-/* =========================
-   Financial Transactions
-========================= */
+// =========================
+// Financial Transactions
+// =========================
 model Revenue {
   id        String    @id @default(cuid())
   date      DateTime
@@ -303,7 +293,6 @@ model Revenue {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  // Relations
   project   Project?      @relation(fields: [projectId], references: [id])
   client    Client?       @relation(fields: [clientId], references: [id])
   phase     ProjectPhase? @relation(fields: [phaseId], references: [id])
@@ -325,7 +314,6 @@ model Expense {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
-  // Relations
   project   Project?      @relation(fields: [projectId], references: [id])
   supplier  Supplier?     @relation(fields: [supplierId], references: [id])
   phase     ProjectPhase? @relation(fields: [phaseId], references: [id])
@@ -349,7 +337,6 @@ model Invoice {
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 
-  // Relations
   project   Project?  @relation(fields: [projectId], references: [id])
   client    Client?   @relation(fields: [clientId], references: [id])
   supplier  Supplier? @relation(fields: [supplierId], references: [id])
@@ -367,7 +354,6 @@ model Cashbox {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
 
-  // Relations
   account        Account    @relation(fields: [accountId], references: [id])
   transfersFrom  Transfer[] @relation("TransferFrom")
   transfersTo    Transfer[] @relation("TransferTo")
@@ -385,7 +371,6 @@ model Transfer {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Relations
   fromSafe    Cashbox  @relation("TransferFrom", fields: [fromSafeId], references: [id])
   toSafe      Cashbox  @relation("TransferTo",   fields: [toSafeId],   references: [id])
 
@@ -406,15 +391,14 @@ model Payment {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  // Relations
   customer   Client?  @relation(fields: [customerId], references: [id])
 
   @@map("payments")
 }
 
-/* =========================
-   Partners & Settlements
-========================= */
+// =========================
+// Partners & Settlements
+// =========================
 model Partner {
   id        String   @id @default(cuid())
   name      String
@@ -423,7 +407,6 @@ model Partner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Back-relations
   projectPartners ProjectPartner[]
   settlementsFrom SettlementLine[] @relation("SettlementFrom")
   settlementsTo   SettlementLine[] @relation("SettlementTo")
@@ -441,7 +424,6 @@ model ProjectPartner {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  // Relations
   project   Project @relation(fields: [projectId], references: [id])
   partner   Partner @relation(fields: [partnerId], references: [id])
 
@@ -457,7 +439,6 @@ model Settlement {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // Relations
   project   Project         @relation(fields: [projectId], references: [id])
   lines     SettlementLine[]
 
@@ -473,7 +454,6 @@ model SettlementLine {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  // Relations
   settlement   Settlement @relation(fields: [settlementId], references: [id])
   fromPartner  Partner    @relation("SettlementFrom", fields: [fromPartnerId], references: [id])
   toPartner    Partner    @relation("SettlementTo",   fields: [toPartnerId],   references: [id])
@@ -481,9 +461,9 @@ model SettlementLine {
   @@map("settlement_lines")
 }
 
-/* =========================
-   Payroll
-========================= */
+// =========================
+// Payroll
+// =========================
 model Employee {
   id          String   @id @default(cuid())
   name        String
@@ -493,7 +473,6 @@ model Employee {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Back-relations
   payrolls    Payroll[]
 
   @@map("employees")
@@ -504,7 +483,7 @@ model Payroll {
   employeeId String
   projectId  String?
   phaseId    String?
-  month      String   // YYYY-MM
+  month      String
   gross      Decimal  @db.Decimal(18, 2)
   deductions Decimal  @default(0) @db.Decimal(18, 2)
   net        Decimal  @db.Decimal(18, 2)
@@ -513,7 +492,6 @@ model Payroll {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  // Relations
   employee   Employee     @relation(fields: [employeeId], references: [id])
   project    Project?     @relation(fields: [projectId], references: [id])
   phase      ProjectPhase?@relation(fields: [phaseId], references: [id])
@@ -521,9 +499,9 @@ model Payroll {
   @@map("payrolls")
 }
 
-/* =========================
-   System & Settings
-========================= */
+// =========================
+// System & Settings
+// =========================
 model Notification {
   id        String           @id @default(cuid())
   type      NotificationType
@@ -568,9 +546,9 @@ model AuditLog {
   @@map("audit_logs")
 }
 
-/* =========================
-   Legacy ERP (kept as-is, no FKs)
-========================= */
+// =========================
+// Legacy ERP (kept as-is)
+// =========================
 model Customer {
   id          String   @id @default(cuid())
   name        String
@@ -671,7 +649,7 @@ model BrokerDue {
 model PartnerGroup {
   id          String   @id @default(cuid())
   name        String
-  partnerIds  String[] // Array of partner IDs
+  partnerIds  String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
