@@ -8,7 +8,7 @@
   # NODE_VERSION = "20"       # بديل LTS أحدث
   PRISMA_GENERATE_SKIP_AUTOINSTALL = "true"
   NEXT_TELEMETRY_DISABLED = "1"
-  DATABASE_URL = "postgresql://user:pass@localhost:5432/placeholder"
+  DATABASE_URL = "postgresql://neondb_owner:npg_Nf8Ss6AGKOuc@ep-wild-feather-adtcl8dw-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
