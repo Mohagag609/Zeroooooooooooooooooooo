@@ -1,6 +1,6 @@
 [build]
   publish = ".next"
-  command = "chmod +x scripts/build.sh && ./scripts/build.sh"
+  command = "npm run build"
 
 [build.environment]
   # اختَر واحدة:
@@ -8,7 +8,7 @@
   # NODE_VERSION = "20"       # بديل LTS أحدث
   PRISMA_GENERATE_SKIP_AUTOINSTALL = "true"
   NEXT_TELEMETRY_DISABLED = "1"
-  NPM_FLAGS = "--prefix=/opt/buildhome/cache/node_modules"
+  DATABASE_URL = "postgresql://user:pass@localhost:5432/placeholder"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
