@@ -185,8 +185,9 @@ export async function DELETE(
         action: 'DELETE',
         entity: 'Client',
         entityId: params.id,
-        changes: JSON.stringify(existingClient),
-        userId: 'system', // Replace with actual user ID when auth is implemented
+        meta: {
+          deletedClient: existingClient,
+        },
       },
     })
 
