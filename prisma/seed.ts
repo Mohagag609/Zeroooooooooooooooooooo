@@ -3,70 +3,97 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  // Create default accounts
-  const assetAccount = await prisma.account.upsert({
-    where: { code: '1000' },
+  console.log('🌱 Starting database seeding...')
+
+  // Create sample client
+  const client = await prisma.client.upsert({
+    where: { id: 'sample-client-1' },
     update: {},
     create: {
-      code: '1000',
-      name: 'النقد في الصندوق',
-      type: 'asset',
+      id: 'sample-client-1',
+      name: 'أحمد محمد',
+      email: 'ahmed@example.com',
+      phone: '+966501234567',
+      address: 'الرياض، المملكة العربية السعودية',
+      code: 'CL001',
+      status: 'ACTIVE',
     },
   })
 
-  const revenueAccount = await prisma.account.upsert({
-    where: { code: '4000' },
+  // Create sample supplier
+  const supplier = await prisma.supplier.upsert({
+    where: { id: 'sample-supplier-1' },
     update: {},
     create: {
-      code: '4000',
-      name: 'إيرادات المشاريع',
-      type: 'revenue',
+      id: 'sample-supplier-1',
+      name: 'شركة مواد البناء المتحدة',
+      email: 'info@building-materials.com',
+      phone: '+966502345678',
+      address: 'جدة، المملكة العربية السعودية',
+      code: 'SUP001',
+      status: 'ACTIVE',
     },
   })
 
-  const expenseAccount = await prisma.account.upsert({
-    where: { code: '5000' },
+  // Create sample project
+  const project = await prisma.project.upsert({
+    where: { id: 'sample-project-1' },
     update: {},
     create: {
-      code: '5000',
-      name: 'مصروفات المشاريع',
-      type: 'expense',
+      id: 'sample-project-1',
+      name: 'فيلا الرياض الفاخرة',
+      description: 'مشروع بناء فيلا فاخرة في الرياض',
+      status: 'active',
+      startDate: new Date('2024-01-15'),
+      endDate: new Date('2024-06-30'),
+      budget: 2500000,
+      clientId: client.id,
     },
   })
 
-  // Create default warehouse
-  const warehouse = await prisma.warehouse.upsert({
-    where: { id: 'default-warehouse' },
+  // Create sample revenue
+  const revenue = await prisma.revenue.upsert({
+    where: { id: 'sample-revenue-1' },
     update: {},
     create: {
-      id: 'default-warehouse',
-      name: 'المخزن الرئيسي',
-      location: 'المكتب الرئيسي',
+      id: 'sample-revenue-1',
+      amount: 500000,
+      note: 'دفعة أولى من مشروع فيلا الرياض',
+      date: new Date('2024-03-15'),
+      projectId: project.id,
+      clientId: client.id,
+      accountId: 'cash-account-1', // You might need to create this account first
     },
   })
 
-  // Create default cashbox
-  const cashbox = await prisma.cashbox.upsert({
-    where: { code: 'CASH-001' },
+  // Create sample expense
+  const expense = await prisma.expense.upsert({
+    where: { id: 'sample-expense-1' },
     update: {},
     create: {
-      code: 'CASH-001',
-      name: 'الصندوق الرئيسي',
-      type: 'cash',
-      accountId: assetAccount.id,
+      id: 'sample-expense-1',
+      amount: 250000,
+      description: 'شراء مواد بناء من المورد',
+      date: new Date('2024-03-10'),
+      supplierId: supplier.id,
+      accountId: 'cash-account-1', // You might need to create this account first
     },
   })
 
-  console.log('Database seeded successfully')
-  console.log({ assetAccount, revenueAccount, expenseAccount, warehouse, cashbox })
+  console.log('✅ Database seeded successfully!')
+  console.log('📊 Created:')
+  console.log(`   - Client: ${client.name}`)
+  console.log(`   - Supplier: ${supplier.name}`)
+  console.log(`   - Project: ${project.name}`)
+  console.log(`   - Revenue: ${revenue.amount} SAR`)
+  console.log(`   - Expense: ${expense.amount} SAR`)
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
+  .catch((e) => {
+    console.error('❌ Error seeding database:', e)
     process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
   })
