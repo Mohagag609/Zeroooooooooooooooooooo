@@ -15,14 +15,10 @@ export async function GET(
     const supplier = await prisma.supplier.findUnique({
       where: { id: params.id },
       include: {
-        invoices: {
-          include: {
-            lines: true,
-          },
-        },
+        invoices: true,
         journalLines: {
           include: {
-            journalEntry: true,
+            entry: true,
           },
           orderBy: { createdAt: 'desc' },
         },
