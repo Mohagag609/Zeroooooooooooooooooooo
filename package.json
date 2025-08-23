@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "ERP نظام مقاولات محاسبي شامل",
   "private": true,
-  "engines": { "node": "18.20.3" },
+  "engines": {
+    "node": "18.20.3"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma migrate deploy && next build",
@@ -69,7 +71,7 @@
     "sonner": "^1.2.4"
   },
   "devDependencies": {
-    "prisma": "^5.7.1",                       // 👈 أُضيفت
+    "prisma": "^5.7.1",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
@@ -94,7 +96,12 @@
     "@netlify/plugin-nextjs": "^5.0.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{js,jsx,json,md}": ["prettier --write"]
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,md}": [
+      "prettier --write"
+    ]
   }
 }
