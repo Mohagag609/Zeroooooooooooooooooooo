@@ -118,10 +118,10 @@ export async function PUT(
         action: 'UPDATE',
         entity: 'Client',
         entityId: client.id,
-        changes: JSON.stringify({
+        meta: {
           before: existingClient,
           after: validatedData,
-        }),
+        },
         userId: 'system', // Replace with actual user ID when auth is implemented
       },
     })
