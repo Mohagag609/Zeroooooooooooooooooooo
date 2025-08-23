@@ -24,7 +24,8 @@ export default function TestPage() {
           setStatus('فشل في الاتصال')
         }
       } catch (err) {
-        setError(`❌ خطأ في الشبكة: ${err.message}`)
+        const errorMessage = err instanceof Error ? err.message : 'خطأ غير معروف'
+        setError(`❌ خطأ في الشبكة: ${errorMessage}`)
         setStatus('فشل في الاتصال')
       }
     }
