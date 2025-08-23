@@ -51,21 +51,7 @@ export async function GET(request: NextRequest) {
               name: true,
             },
           },
-          journalEntry: {
-            include: {
-              lines: {
-                include: {
-                  account: {
-                    select: {
-                      id: true,
-                      name: true,
-                      code: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
+
         },
       }),
       prisma.revenue.count({ where }),
@@ -133,10 +119,9 @@ export async function POST(request: NextRequest) {
         },
       })
 
-      // Update revenue with journal entry reference
-      const updatedRevenue = await tx.revenue.update({
+      // Get updated revenue with includes
+      const updatedRevenue = await tx.revenue.findUnique({
         where: { id: revenue.id },
-        data: { journalEntryId: journalEntry.id },
         include: {
           project: {
             select: {
@@ -149,15 +134,6 @@ export async function POST(request: NextRequest) {
             select: {
               id: true,
               name: true,
-            },
-          },
-          journalEntry: {
-            include: {
-              lines: {
-                include: {
-                  account: true,
-                },
-              },
             },
           },
         },
