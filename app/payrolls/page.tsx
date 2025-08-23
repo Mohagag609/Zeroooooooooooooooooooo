@@ -212,6 +212,7 @@ const columns: ColumnDef<Payroll>[] = [
     accessorKey: 'paymentMethod',
     header: 'طريقة الدفع',
     cell: ({ row }) => {
+      const payroll = row.original
       const paymentMethod = row.getValue('paymentMethod') as string
       const paymentMethodConfig = {
         BANK_TRANSFER: { label: 'تحويل بنكي', variant: 'default' as const },
