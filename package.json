@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "نظام إدارة المقاولات المحاسبي الشامل",
   "private": true,
+  "engines": {
+    "node": "18.20.3"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -24,9 +27,18 @@
     "@prisma/client": "^5.7.1",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
+<<<<<<< HEAD
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-collapsible": "^1.0.3",
+=======
+    "@radix-ui/react-progress": "^1.0.3",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-scroll-area": "^1.0.5",
+>>>>>>> a392860ba0fbcd4a01a321f00d02b262c2fc80e5
     "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -41,6 +53,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slider": "^1.1.2",
+<<<<<<< HEAD
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
@@ -62,8 +75,15 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
+=======
+    "cmdk": "^0.2.0",
+    "date-fns": "^2.30.0",
+    "react-day-picker": "^8.9.1",
+    "sonner": "^1.2.4"
+>>>>>>> a392860ba0fbcd4a01a321f00d02b262c2fc80e5
   },
   "devDependencies": {
+    "prisma": "^5.7.1",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
@@ -75,6 +95,7 @@
     "prisma": "^5.7.1",
     "tailwindcss": "^3.4.0",
     "tsx": "^4.6.2",
+<<<<<<< HEAD
     "typescript": "^5.3.3"
   },
   "engines": {
@@ -95,3 +116,24 @@
   "author": "ERP Development Team",
   "license": "MIT"
 }
+=======
+    "vitest": "^1.1.0",
+    "@vitest/ui": "^1.1.0",
+    "jsdom": "^23.0.1",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/jest-dom": "^6.1.5",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "@netlify/plugin-nextjs": "^5.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,md}": [
+      "prettier --write"
+    ]
+  }
+}
+>>>>>>> a392860ba0fbcd4a01a321f00d02b262c2fc80e5
