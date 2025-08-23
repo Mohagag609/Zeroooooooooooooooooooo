@@ -17,12 +17,10 @@ import {
   Phone,
   Mail,
   MapPin,
-  Building2,
   CheckCircle,
   AlertTriangle,
   UserCheck,
-  UserX,
-  Percent
+  UserX
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

@@ -28,7 +28,7 @@ export async function GET(
         invoices: true,
         journalLines: {
           include: {
-            journalEntry: true,
+            entry: true,
           },
           orderBy: { createdAt: 'desc' },
         },

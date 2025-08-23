@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DataTable } from '@/components/ui/data-table'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Eye, Edit, Trash2, Plus, Wallet, Building2, DollarSign, TrendingUp, TrendingDown } from 'lucide-react'
+import { Eye, Edit, Trash2, Plus, Wallet, Building2, TrendingUp, TrendingDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 // Define the Cashbox type based on our Prisma schema
