@@ -2,9 +2,16 @@
 
 import { useState, useEffect } from 'react'
 
+interface Client {
+  id: string
+  name: string
+  phone?: string
+  code?: string
+}
+
 export default function TestPage() {
   const [status, setStatus] = useState('جاري التحقق...')
-  const [clients, setClients] = useState([])
+  const [clients, setClients] = useState<Client[]>([])
   const [error, setError] = useState('')
 
   useEffect(() => {
