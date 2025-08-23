@@ -17,7 +17,7 @@ import {
   ArrowLeftRight,
   UserCheck,
   CreditCard,
-  Handshake,
+  UserPlus,
   Settings,
   Menu,
   X,
@@ -88,12 +88,12 @@ const sidebarItems = [
   {
     title: 'الشركاء',
     href: '/main/partners',
-    icon: Handshake,
+    icon: UserPlus,
   },
   {
     title: 'تسويات الشركاء',
     href: '/main/settlements',
-    icon: Handshake,
+    icon: UserPlus,
   },
   {
     title: 'الإعدادات',
