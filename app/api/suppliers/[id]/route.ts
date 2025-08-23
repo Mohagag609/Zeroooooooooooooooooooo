@@ -107,11 +107,10 @@ export async function PUT(
         action: 'UPDATE',
         entity: 'Supplier',
         entityId: supplier.id,
-        changes: JSON.stringify({
+        meta: {
           before: existingSupplier,
           after: validatedData,
-        }),
-        userId: 'system', // Replace with actual user ID when auth is implemented
+        },
       },
     })
 
@@ -173,8 +172,9 @@ export async function DELETE(
         action: 'DELETE',
         entity: 'Supplier',
         entityId: params.id,
-        changes: JSON.stringify(existingSupplier),
-        userId: 'system', // Replace with actual user ID when auth is implemented
+        meta: {
+          deletedSupplier: existingSupplier,
+        },
       },
     })
 

@@ -103,8 +103,9 @@ export async function POST(request: NextRequest) {
         action: 'CREATE',
         entity: 'Client',
         entityId: client.id,
-        changes: JSON.stringify(validatedData),
-        userId: 'system', // Replace with actual user ID when auth is implemented
+        meta: {
+          createdClient: validatedData,
+        },
       },
     })
 

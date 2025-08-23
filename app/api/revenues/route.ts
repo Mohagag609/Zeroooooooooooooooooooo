@@ -171,11 +171,10 @@ export async function POST(request: NextRequest) {
           action: 'CREATE',
           entity: 'Revenue',
           entityId: revenue.id,
-          changes: JSON.stringify({
+          meta: {
             revenue: validatedData,
             journalEntry: journalEntry,
-          }),
-          userId: 'system', // Replace with actual user ID when auth is implemented
+          },
         },
       })
 
