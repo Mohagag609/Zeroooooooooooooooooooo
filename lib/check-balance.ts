@@ -385,10 +385,10 @@ export async function checkCashboxBalance(cashboxId: string): Promise<number> {
     }
   })
   
-  const totalDebit = balance._sum.debit || 0
-  const totalCredit = balance._sum.credit || 0
+  const totalDebit = balance._sum.debit ? Number(balance._sum.debit) : 0
+  const totalCredit = balance._sum.credit ? Number(balance._sum.credit) : 0
   
-  return Number(totalDebit - totalCredit)
+  return totalDebit - totalCredit
 }
 
 /**
@@ -408,10 +408,10 @@ export async function checkClientBalance(clientId: string): Promise<number> {
     }
   })
   
-  const totalDebit = balance._sum.debit || 0
-  const totalCredit = balance._sum.credit || 0
+  const totalDebit = balance._sum.debit ? Number(balance._sum.debit) : 0
+  const totalCredit = balance._sum.credit ? Number(balance._sum.credit) : 0
   
-  return Number(totalDebit - totalCredit)
+  return totalDebit - totalCredit
 }
 
 /**
@@ -431,10 +431,10 @@ export async function checkSupplierBalance(supplierId: string): Promise<number> 
     }
   })
   
-  const totalDebit = balance._sum.debit || 0
-  const totalCredit = balance._sum.credit || 0
+  const totalDebit = balance._sum.debit ? Number(balance._sum.debit) : 0
+  const totalCredit = balance._sum.credit ? Number(balance._sum.credit) : 0
   
-  return Number(totalCredit - totalDebit) // المورد دائن
+  return totalCredit - totalDebit // المورد دائن
 }
 
 /**
