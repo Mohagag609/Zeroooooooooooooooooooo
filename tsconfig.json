@@ -24,8 +24,7 @@
       "@/components/*": ["./components/*"],
       "@/lib/*": ["./lib/*"],
       "@/app/*": ["./app/*"],
-      "@/services/*": ["./services/*"],
-      "@/types/*": ["./types/*"]
+      "@/prisma/*": ["./prisma/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

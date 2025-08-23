@@ -39,6 +39,8 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS
 Thumbs.db
@@ -123,9 +125,34 @@ temp/
 *.sqlite
 *.sqlite3
 
+# Prisma
+/prisma/migrations/
+
+# Uploads
+/uploads
+/public/uploads
+
+# Backups
+/backups
+
+# SSL certificates
+/ssl
+*.pem
+*.key
+*.crt
+
+# Docker
+.dockerignore
+
 # Backup files
-backups/
+*.bak
 *.backup
 
-# Prisma
-prisma/migrations/
+# System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
