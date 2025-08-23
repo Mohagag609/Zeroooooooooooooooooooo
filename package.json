@@ -69,6 +69,7 @@
     "sonner": "^1.2.4"
   },
   "devDependencies": {
+    "prisma": "^5.7.1",                       // 👈 أُضيفت
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
