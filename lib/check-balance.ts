@@ -68,8 +68,7 @@ export function createRevenueEntry(
   amount: number,
   accountId: string,
   projectId?: string,
-  clientId?: string,
-  phaseId?: string
+  clientId?: string
 ): JournalLine[] {
   const lines: JournalLine[] = []
   
@@ -98,7 +97,6 @@ export function createRevenueEntry(
     debit: 0,
     credit: amount,
     projectId,
-    phaseId,
   })
   
   return lines
@@ -111,8 +109,7 @@ export function createExpenseEntry(
   amount: number,
   accountId: string,
   projectId?: string,
-  supplierId?: string,
-  phaseId?: string
+  supplierId?: string
 ): JournalLine[] {
   const lines: JournalLine[] = []
   
@@ -122,7 +119,6 @@ export function createExpenseEntry(
     debit: amount,
     credit: 0,
     projectId,
-    phaseId,
   })
   
   // إذا كان هناك مورد، نضع المصروف في الذمم الدائنة
@@ -279,8 +275,7 @@ export function createTransferEntry(
  */
 export function createMaterialOutEntry(
   amount: number,
-  projectId: string,
-  phaseId?: string
+  projectId: string
 ): JournalLine[] {
   return [
     {
@@ -288,7 +283,6 @@ export function createMaterialOutEntry(
       debit: amount,
       credit: 0,
       projectId,
-      phaseId,
     },
     {
       accountId: '1200', // مخزون المواد
@@ -304,8 +298,7 @@ export function createMaterialOutEntry(
  */
 export function createPayrollAccrualEntry(
   amount: number,
-  projectId?: string,
-  phaseId?: string
+  projectId?: string
 ): JournalLine[] {
   return [
     {
@@ -313,7 +306,6 @@ export function createPayrollAccrualEntry(
       debit: amount,
       credit: 0,
       projectId,
-      phaseId,
     },
     {
       accountId: '2100', // أجور مستحقة
