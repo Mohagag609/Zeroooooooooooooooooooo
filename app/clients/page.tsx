@@ -171,80 +171,80 @@ const columns: ColumnDef<Client>[] = [
   },
 ]
 
-// Mock functions for actions (to be implemented)
-const handleView = (id: string) => {
-  console.log('View client:', id)
+// API functions for actions
+const handleView = async (id: string) => {
+  try {
+    const response = await fetch(`/api/clients/${id}`)
+    if (response.ok) {
+      const client = await response.json()
+      console.log('Client details:', client)
+      // TODO: Navigate to client details page
+    }
+  } catch (error) {
+    console.error('Error fetching client:', error)
+  }
 }
 
 const handleEdit = (id: string) => {
+  // TODO: Navigate to edit client page
   console.log('Edit client:', id)
 }
 
-const handleDelete = (id: string) => {
-  console.log('Delete client:', id)
+const handleDelete = async (id: string) => {
+  if (confirm('هل أنت متأكد من حذف هذا العميل؟')) {
+    try {
+      const response = await fetch(`/api/clients/${id}`, {
+        method: 'DELETE',
+      })
+      
+      if (response.ok) {
+        // Refresh the clients list
+        window.location.reload()
+      } else {
+        const error = await response.json()
+        alert(error.error || 'فشل في حذف العميل')
+      }
+    } catch (error) {
+      console.error('Error deleting client:', error)
+      alert('فشل في حذف العميل')
+    }
+  }
 }
 
 const handleExport = (format: 'csv' | 'excel' | 'pdf') => {
   console.log('Export clients:', format)
+  // TODO: Implement export functionality
 }
 
 const handlePrint = () => {
   console.log('Print clients')
+  // TODO: Implement print functionality
 }
 
 export default function ClientsPage() {
   const [clients, setClients] = React.useState<Client[]>([])
   const [loading, setLoading] = React.useState(true)
 
-  // Mock data - replace with actual API call
+  // Fetch clients from API
   React.useEffect(() => {
     const fetchClients = async () => {
-      setLoading(true)
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Mock data
-      const mockClients: Client[] = [
-        {
-          id: '1',
-          name: 'أحمد محمد علي',
-          email: 'ahmed@example.com',
-          phone: '0501234567',
-          address: 'الرياض، المملكة العربية السعودية',
-          code: 'CLI-001',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-01-15'),
-          _count: { projects: 3, invoices: 12 },
-          balance: 25000,
-        },
-        {
-          id: '2',
-          name: 'فاطمة أحمد السالم',
-          email: 'fatima@example.com',
-          phone: '0507654321',
-          address: 'جدة، المملكة العربية السعودية',
-          code: 'CLI-002',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-02-20'),
-          _count: { projects: 1, invoices: 5 },
-          balance: -15000,
-        },
-        {
-          id: '3',
-          name: 'محمد عبدالله الخالد',
-          email: null,
-          phone: '0551234567',
-          address: null,
-          code: 'CLI-003',
-          status: 'INACTIVE',
-          createdAt: new Date('2024-03-10'),
-          _count: { projects: 0, invoices: 2 },
-          balance: 0,
-        },
-      ]
-      
-      setClients(mockClients)
-      setLoading(false)
+      try {
+        setLoading(true)
+        const response = await fetch('/api/clients')
+        
+        if (!response.ok) {
+          throw new Error('فشل في جلب بيانات العملاء')
+        }
+        
+        const data = await response.json()
+        setClients(data.clients || [])
+      } catch (error) {
+        console.error('Error fetching clients:', error)
+        // Fallback to empty array on error
+        setClients([])
+      } finally {
+        setLoading(false)
+      }
     }
 
     fetchClients()
