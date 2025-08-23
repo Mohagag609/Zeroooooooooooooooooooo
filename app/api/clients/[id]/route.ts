@@ -122,7 +122,6 @@ export async function PUT(
           before: existingClient,
           after: validatedData,
         },
-        userId: 'system', // Replace with actual user ID when auth is implemented
       },
     })
 
