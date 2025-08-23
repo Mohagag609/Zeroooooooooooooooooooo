@@ -3,12 +3,14 @@
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "18"
+  # اختَر واحدة:
+  NODE_VERSION = "18.20.3"   # آمن مع Next 14
+  # NODE_VERSION = "20"       # بديل LTS أحدث
+  PRISMA_GENERATE_SKIP_AUTOINSTALL = "true"
+  NEXT_TELEMETRY_DISABLED = "1"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# لا تضيف أي redirects global للـ /* → /index.html في مشروع Next.js
+# لو محتاج Redirects معينة، أضف قواعد محددة لمسارات بعينها فقط.
