@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
           { location: { contains: search, mode: 'insensitive' as const } },
         ],
       }),
-      ...(status && { status }),
+      ...(status && { status: status as 'active' | 'paused' | 'closed' }),
       ...(clientId && { clientId }),
     }
 
