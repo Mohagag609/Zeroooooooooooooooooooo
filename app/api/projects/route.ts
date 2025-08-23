@@ -42,9 +42,9 @@ export async function GET(request: NextRequest) {
             select: {
               id: true,
               name: true,
-              status: true,
-              budget: true,
-              actualCost: true,
+              startDate: true,
+              endDate: true,
+              progress: true,
             },
           },
           partners: {
