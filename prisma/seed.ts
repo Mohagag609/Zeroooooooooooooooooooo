@@ -5,6 +5,50 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('🌱 Starting database seeding...')
 
+  // Minimal chart of accounts
+  // Root accounts
+  const assets = await prisma.account.upsert({
+    where: { code: '1000' },
+    update: {},
+    create: { id: 'acc-assets', code: '1000', name: 'الأصول', type: 'asset' },
+  })
+  const revenuesRoot = await prisma.account.upsert({
+    where: { code: '4000' },
+    update: {},
+    create: { id: 'acc-revenues', code: '4000', name: 'الإيرادات', type: 'revenue' },
+  })
+  const expensesRoot = await prisma.account.upsert({
+    where: { code: '5000' },
+    update: {},
+    create: { id: 'acc-expenses', code: '5000', name: 'المصروفات', type: 'expense' },
+  })
+
+  // Cash account under assets
+  const cashAccount = await prisma.account.upsert({
+    where: { code: '1010' },
+    update: {},
+    create: {
+      id: 'acc-cash-1010',
+      code: '1010',
+      name: 'الصندوق النقدي',
+      type: 'asset',
+      parentId: assets.id,
+    },
+  })
+
+  // Create a default cashbox linked to the cash account
+  await prisma.cashbox.upsert({
+    where: { code: 'SAFE-1' },
+    update: {},
+    create: {
+      id: 'cashbox-1',
+      name: 'الخزينة الرئيسية',
+      type: 'cash',
+      code: 'SAFE-1',
+      accountId: cashAccount.id,
+    },
+  })
+
   // Create sample client
   const client = await prisma.client.upsert({
     where: { id: 'sample-client-1' },
@@ -47,7 +91,7 @@ async function main() {
     },
   })
 
-  // Create sample revenue
+  // Create sample revenue (credit revenue, debit cash via account link only)
   const revenue = await prisma.revenue.upsert({
     where: { id: 'sample-revenue-1' },
     update: {},
@@ -58,11 +102,11 @@ async function main() {
       date: new Date('2024-03-15'),
       projectId: project.id,
       clientId: client.id,
-      accountId: 'cash-account-1', // You might need to create this account first
+      accountId: revenuesRoot.id,
     },
   })
 
-  // Create sample expense
+  // Create sample expense (debit expense, credit cash)
   const expense = await prisma.expense.upsert({
     where: { id: 'sample-expense-1' },
     update: {},
@@ -72,7 +116,7 @@ async function main() {
       note: 'شراء مواد بناء من المورد',
       date: new Date('2024-03-10'),
       supplierId: supplier.id,
-      accountId: 'cash-account-1', // You might need to create this account first
+      accountId: expensesRoot.id,
     },
   })
 
