@@ -56,7 +56,7 @@ async function main() {
       date: new Date('2024-03-15'),
       projectId: project.id,
       clientId: client.id,
-      accountId: 'cash-account-1', // This will fail if the account doesn't exist. The schema needs a default or this needs to be created first.
+      accountId: 'cash-account-1', // This might fail if a default account isn't set up
     },
   });
 
@@ -70,7 +70,7 @@ async function main() {
       note: 'شراء مواد بناء من المورد',
       date: new Date('2024-03-10'),
       supplierId: supplier.id,
-      accountId: 'cash-account-1', // This will fail if the account doesn't exist.
+      accountId: 'cash-account-1', // This might fail if a default account isn't set up
     },
   });
 }

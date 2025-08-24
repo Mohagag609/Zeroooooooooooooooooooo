@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
-  let rows: Array<{ id: string; name: string; status: string; startDate?: string | null }> = [];
+  let rows: Array<{ id: string; name: string; status: string; startDate: string | null }> = [];
   try {
     const data = await prisma.project.findMany({
       select: {
@@ -19,7 +19,7 @@ export default async function ProjectsPage() {
     });
     rows = data.map((d) => ({
       ...d,
-      startDate: d.startDate.toISOString(),
+      startDate: d.startDate ? d.startDate.toISOString() : null,
     }));
   } catch (e) {
     // Ignore DB errors
