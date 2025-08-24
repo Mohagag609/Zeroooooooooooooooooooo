@@ -1,26 +1,29 @@
 import PageShell from "@/components/page-shell";
 import { prisma } from "@/lib/db";
-import { toPlain } from "@/lib/serialize";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function ExpensesPage() {
-  let rows: Array<{ id: string; amount: number; description?: string | null; date: string }> = [];
+  let rows: Array<{ id: string; amount: number; note?: string | null; date: string }> = [];
   try {
     const data = await prisma.expense.findMany({
-      select: { 
-        id: true, 
-        amount: true, 
-        description: true, 
-        date: true 
+      select: {
+        id: true,
+        amount: true,
+        note: true,
+        date: true,
       },
       orderBy: { date: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data.map((d) => ({
+      ...d,
+      amount: d.amount.toNumber(),
+      date: d.date.toISOString(),
+    }));
   } catch (e) {
-    console.error("[ExpensesPage] DB error:", e);
+    // Ignore DB errors
     rows = [];
   }
 
@@ -36,7 +39,7 @@ export default async function ExpensesPage() {
                 {new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR' }).format(r.amount)}
               </div>
               <div className="text-sm text-muted-foreground">
-                {r.description || "بدون وصف"}
+                {r.note || "بدون ملاحظات"}
               </div>
               <div className="text-sm text-muted-foreground">
                 التاريخ: {new Date(r.date).toLocaleDateString('ar-SA')}

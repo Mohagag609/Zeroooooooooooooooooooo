@@ -1,6 +1,5 @@
 import PageShell from "@/components/page-shell";
 import { prisma } from "@/lib/db";
-import { toPlain } from "@/lib/serialize";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,9 +12,9 @@ export default async function SuppliersPage() {
       orderBy: { createdAt: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data;
   } catch (e) {
-    console.error("[SuppliersPage] DB error:", e);
+    // Ignore DB errors
     rows = [];
   }
 

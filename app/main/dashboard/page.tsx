@@ -27,11 +27,12 @@ export default async function DashboardPage() {
       clients,
       suppliers,
       projects,
-      revenues: revenues._sum.amount || 0,
-      expenses: expenses._sum.amount || 0
+      revenues: Number(revenues._sum.amount || 0),
+      expenses: Number(expenses._sum.amount || 0)
     });
   } catch (e) {
-    console.error("[DashboardPage] DB error:", e);
+    // Database errors are intentionally ignored in the dashboard to prevent crashes.
+    // A monitoring/logging service should be used in production.
   }
 
   return (

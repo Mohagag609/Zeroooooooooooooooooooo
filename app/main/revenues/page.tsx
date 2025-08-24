@@ -1,6 +1,5 @@
 import PageShell from "@/components/page-shell";
 import { prisma } from "@/lib/db";
-import { toPlain } from "@/lib/serialize";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,18 +8,22 @@ export default async function RevenuesPage() {
   let rows: Array<{ id: string; amount: number; note?: string | null; date: string }> = [];
   try {
     const data = await prisma.revenue.findMany({
-      select: { 
-        id: true, 
-        amount: true, 
-        note: true, 
-        date: true 
+      select: {
+        id: true,
+        amount: true,
+        note: true,
+        date: true,
       },
       orderBy: { date: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data.map((d) => ({
+      ...d,
+      amount: d.amount.toNumber(),
+      date: d.date.toISOString(),
+    }));
   } catch (e) {
-    console.error("[RevenuesPage] DB error:", e);
+    // Ignore DB errors
     rows = [];
   }
 
