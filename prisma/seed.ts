@@ -15,8 +15,6 @@ async function main() {
       email: 'ahmed@example.com',
       phone: '+966501234567',
       address: 'الرياض، المملكة العربية السعودية',
-      code: 'CL001',
-      status: 'ACTIVE',
     },
   })
 
@@ -30,8 +28,6 @@ async function main() {
       email: 'info@building-materials.com',
       phone: '+966502345678',
       address: 'جدة، المملكة العربية السعودية',
-      code: 'SUP001',
-      status: 'ACTIVE',
     },
   })
 
@@ -41,8 +37,8 @@ async function main() {
     update: {},
     create: {
       id: 'sample-project-1',
+      code: 'PRJ-0001',
       name: 'فيلا الرياض الفاخرة',
-      description: 'مشروع بناء فيلا فاخرة في الرياض',
       status: 'active',
       startDate: new Date('2024-01-15'),
       endDate: new Date('2024-06-30'),
@@ -73,7 +69,7 @@ async function main() {
     create: {
       id: 'sample-expense-1',
       amount: 250000,
-      description: 'شراء مواد بناء من المورد',
+      note: 'شراء مواد بناء من المورد',
       date: new Date('2024-03-10'),
       supplierId: supplier.id,
       accountId: 'cash-account-1', // You might need to create this account first

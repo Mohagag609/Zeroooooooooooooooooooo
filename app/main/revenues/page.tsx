@@ -18,7 +18,12 @@ export default async function RevenuesPage() {
       orderBy: { date: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data.map((d) => ({
+      id: d.id,
+      amount: Number(d.amount as any),
+      note: d.note,
+      date: (d.date as Date).toISOString(),
+    }));
   } catch (e) {
     console.error("[RevenuesPage] DB error:", e);
     rows = [];

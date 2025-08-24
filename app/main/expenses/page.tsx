@@ -6,19 +6,24 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function ExpensesPage() {
-  let rows: Array<{ id: string; amount: number; description?: string | null; date: string }> = [];
+  let rows: Array<{ id: string; amount: number; note?: string | null; date: string }> = [];
   try {
     const data = await prisma.expense.findMany({
       select: { 
         id: true, 
         amount: true, 
-        description: true, 
+        note: true, 
         date: true 
       },
       orderBy: { date: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data.map((d) => ({
+      id: d.id,
+      amount: Number(d.amount as any),
+      note: d.note,
+      date: (d.date as Date).toISOString(),
+    }));
   } catch (e) {
     console.error("[ExpensesPage] DB error:", e);
     rows = [];
@@ -36,7 +41,7 @@ export default async function ExpensesPage() {
                 {new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR' }).format(r.amount)}
               </div>
               <div className="text-sm text-muted-foreground">
-                {r.description || "بدون وصف"}
+                {r.note || "بدون وصف"}
               </div>
               <div className="text-sm text-muted-foreground">
                 التاريخ: {new Date(r.date).toLocaleDateString('ar-SA')}

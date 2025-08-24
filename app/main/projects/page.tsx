@@ -18,7 +18,12 @@ export default async function ProjectsPage() {
       orderBy: { createdAt: "desc" },
       take: 50,
     });
-    rows = toPlain(data);
+    rows = data.map((d) => ({
+      id: d.id,
+      name: d.name,
+      status: String(d.status),
+      startDate: d.startDate ? (d.startDate as Date).toISOString() : null,
+    }));
   } catch (e) {
     console.error("[ProjectsPage] DB error:", e);
     rows = [];
