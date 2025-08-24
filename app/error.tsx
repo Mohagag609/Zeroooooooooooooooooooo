@@ -53,7 +53,7 @@ export default function Error({
                 إعادة المحاولة
               </Button>
               <Button variant="outline" asChild className="flex-1">
-                <Link href="/dashboard">
+                <Link href="/main/dashboard">
                   <Home className="ml-2 h-4 w-4" />
                   العودة للوحة التحكم
                 </Link>
