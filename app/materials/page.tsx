@@ -21,7 +21,7 @@ interface Material {
   currentQuantity: number
   category: string
   status: 'ACTIVE' | 'INACTIVE'
-  createdAt: Date
+  createdAt: string
   _count: {
     materialMoves: number
   }
@@ -217,91 +217,22 @@ export default function MaterialsPage() {
   const [materials, setMaterials] = React.useState<Material[]>([])
   const [loading, setLoading] = React.useState(true)
 
-  // Mock data - replace with actual API call
+  // Fetch materials from API
   React.useEffect(() => {
     const fetchMaterials = async () => {
-      setLoading(true)
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Mock data
-      const mockMaterials: Material[] = [
-        {
-          id: '1',
-          name: 'أسمنت بورتلاند',
-          code: 'MAT-001',
-          description: 'أسمنت بورتلاند عادي للبناء',
-          unit: 'كيس',
-          unitPrice: 25,
-          minQuantity: 100,
-          currentQuantity: 150,
-          category: 'أسمنت',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-01-15'),
-          _count: { materialMoves: 12 },
-        },
-        {
-          id: '2',
-          name: 'حديد تسليح 12مم',
-          code: 'MAT-002',
-          description: 'حديد تسليح قطر 12 ملم',
-          unit: 'طن',
-          unitPrice: 2800,
-          minQuantity: 5,
-          currentQuantity: 3,
-          category: 'حديد',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-01-20'),
-          _count: { materialMoves: 8 },
-        },
-        {
-          id: '3',
-          name: 'خرسانة جاهزة C25',
-          code: 'MAT-003',
-          description: 'خرسانة جاهزة مقاومة C25',
-          unit: 'متر مكعب',
-          unitPrice: 180,
-          minQuantity: 20,
-          currentQuantity: 25,
-          category: 'خرسانة',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-02-01'),
-          _count: { materialMoves: 15 },
-        },
-        {
-          id: '4',
-          name: 'طوب أحمر',
-          code: 'MAT-004',
-          description: 'طوب أحمر للبناء',
-          unit: 'قطعة',
-          unitPrice: 1.5,
-          minQuantity: 1000,
-          currentQuantity: 800,
-          category: 'طوب',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-02-10'),
-          _count: { materialMoves: 6 },
-        },
-        {
-          id: '5',
-          name: 'رمل ناعم',
-          code: 'MAT-005',
-          description: 'رمل ناعم للبناء',
-          unit: 'متر مكعب',
-          unitPrice: 45,
-          minQuantity: 50,
-          currentQuantity: 30,
-          category: 'رمل',
-          status: 'ACTIVE',
-          createdAt: new Date('2024-02-15'),
-          _count: { materialMoves: 10 },
-        },
-      ]
-      
-      setMaterials(mockMaterials)
-      setLoading(false)
+      try {
+        setLoading(true)
+        const res = await fetch('/api/materials')
+        if (!res.ok) throw new Error('فشل في جلب بيانات المواد')
+        const data = await res.json()
+        setMaterials(data.materials ?? [])
+      } catch (e) {
+        console.error('[MaterialsPage] fetch error', e)
+        setMaterials([])
+      } finally {
+        setLoading(false)
+      }
     }
-
     fetchMaterials()
   }, [])
 

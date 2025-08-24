@@ -44,7 +44,6 @@ const nextConfig = {
       { source: '/suppliers/new', destination: '/suppliers', permanent: false },
       { source: '/projects/new', destination: '/projects', permanent: false },
       { source: '/projects/phases', destination: '/phases', permanent: false },
-      { source: '/materials/new', destination: '/materials', permanent: false },
       { source: '/materials/moves', destination: '/material-moves', permanent: false },
       { source: '/warehouses/new', destination: '/warehouses', permanent: false },
       { source: '/warehouses/reports', destination: '/warehouses', permanent: false },
