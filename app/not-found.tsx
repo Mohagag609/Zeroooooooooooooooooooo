@@ -33,13 +33,13 @@ export default function NotFound() {
             </p>
             <div className="flex flex-col sm:flex-row gap-2">
               <Button asChild className="flex-1">
-                <Link href="/main/dashboard">
+                <Link href="/dashboard">
                   <Home className="ml-2 h-4 w-4" />
                   العودة للوحة التحكم
                 </Link>
               </Button>
               <Button variant="outline" asChild className="flex-1">
-                <Link href="/main/dashboard">
+                <Link href="/clients">
                   <ArrowRight className="ml-2 h-4 w-4" />
                   تصفح النظام
                 </Link>

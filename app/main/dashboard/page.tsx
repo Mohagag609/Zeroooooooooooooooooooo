@@ -56,14 +56,12 @@ async function getDashboardData() {
     const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 
     monthlyRevenues.forEach(r => {
-      const month = monthNames[r.date.getMonth()];
       const key = `${r.date.getFullYear()}-${r.date.getMonth()}`;
       if (!monthlyData[key]) monthlyData[key] = { revenues: 0, expenses: 0 };
       monthlyData[key].revenues += r.amount.toNumber();
     });
 
     monthlyExpenses.forEach(e => {
-      const month = monthNames[e.date.getMonth()];
       const key = `${e.date.getFullYear()}-${e.date.getMonth()}`;
       if (!monthlyData[key]) monthlyData[key] = { revenues: 0, expenses: 0 };
       monthlyData[key].expenses += e.amount.toNumber();
